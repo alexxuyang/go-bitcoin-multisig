@@ -15,8 +15,8 @@ import (
 	mathrand "math/rand"
 	"time"
 
-	"code.google.com/p/go.crypto/ripemd160"
 	secp256k1 "github.com/toxeus/go-secp256k1"
+	"golang.org/x/crypto/ripemd160"
 )
 
 // setFixedNonce is used for testing and debugging. It is by default false, but if set to true, then newNonce()
@@ -287,12 +287,19 @@ func NewSignature(rawTransaction []byte, privateKey []byte) ([]byte, error) {
 	shaHash2.Write(hash)
 	rawTransactionHashed := shaHash2.Sum(nil)
 	//Sign the raw transaction
-	signedTransaction, success := secp256k1.Sign(rawTransactionHashed, privateKey32, newNonce())
+	_rawTransactionHashed := [32]byte{}
+	for i, v := range rawTransactionHashed {
+		if i < 32 {
+			_rawTransactionHashed[i] = v
+		}
+	}
+	nonce := newNonce()
+	signedTransaction, success := secp256k1.Sign(_rawTransactionHashed, privateKey32, &nonce)
 	if !success {
 		return nil, errors.New("Failed to sign transaction")
 	}
 	//Verify that it worked.
-	verified := secp256k1.Verify(rawTransactionHashed, signedTransaction, publicKey)
+	verified := secp256k1.Verify(_rawTransactionHashed, signedTransaction, publicKey)
 	if !verified {
 		return nil, errors.New("Failed to verify signed transaction")
 	}

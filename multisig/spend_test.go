@@ -1,10 +1,11 @@
 package multisig
 
 import (
-	"github.com/soroushjp/go-bitcoin-multisig/btcutils"
-	"github.com/soroushjp/go-bitcoin-multisig/testutils"
 	"reflect"
 	"testing"
+
+	"github.com/daizong/go-bitcoin-multisig/btcutils"
+	"github.com/daizong/go-bitcoin-multisig/testutils"
 )
 
 func TestGenerateSpend(t *testing.T) {

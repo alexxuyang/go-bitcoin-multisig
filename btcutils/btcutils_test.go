@@ -1,8 +1,8 @@
 package btcutils
 
 import (
+	"github.com/daizong/go-bitcoin-multisig/testutils"
 	"github.com/prettymuchbryce/hellobitcoin/base58check"
-	"github.com/soroushjp/go-bitcoin-multisig/testutils"
 
 	"encoding/hex"
 	"reflect"
